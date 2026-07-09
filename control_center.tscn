@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://b757vc7suy80l"]
+
+[sub_resource type="GDScript" id="GDScript_hsfs1"]
+
+[node name="ControlCenter" type="Control" unique_id=504010252]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_hsfs1")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=930860012]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1626799266]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=383775397]
+custom_minimum_size = Vector2(1, 1)
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=2018364266]
+layout_mode = 2
+text = "Assembly Adventures"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=488136079]
+layout_mode = 2
+
+[node name="badge_1" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1974619327]
+layout_mode = 2
+
+[node name="badge_2" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1487083918]
+layout_mode = 2
+
+[node name="badge_3" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1123690702]
+layout_mode = 2
+
+[node name="badge_4" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=222825457]
+layout_mode = 2
+
+[node name="badge_5" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1344951874]
+layout_mode = 2
+
+[node name="badge_6" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=173862647]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer" unique_id=1043020768]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+
+[node name="level_1" type="Button" parent="VBoxContainer/GridContainer" unique_id=529076245]
+layout_mode = 2
+text = "Level 1: Basic RISC-V Commands"
+
+[node name="level_2" type="Button" parent="VBoxContainer/GridContainer" unique_id=347652765]
+layout_mode = 2
+text = "Level 2: Opcode"
+
+[node name="level_3" type="Button" parent="VBoxContainer/GridContainer" unique_id=799141599]
+layout_mode = 2
+text = "Level 3: Pipelining"
+
+[node name="level_4" type="Button" parent="VBoxContainer/GridContainer" unique_id=456400718]
+layout_mode = 2
+text = "Level 4: The Stack"
+
+[node name="level_5" type="Button" parent="VBoxContainer/GridContainer" unique_id=315773592]
+layout_mode = 2
+text = "Level 5: Code Tracing"
+
+[node name="level_6" type="Button" parent="VBoxContainer/GridContainer" unique_id=1038992234]
+layout_mode = 2
+text = "Level 6: Code Writing"
+
+[node name="level_7" type="Button" parent="VBoxContainer/GridContainer" unique_id=401415624]
+layout_mode = 2
+text = "CHALLENGE"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=1327763178]
+layout_mode = 2
