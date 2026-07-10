@@ -15,8 +15,7 @@ offset_bottom = 40.0
 color = Color(0, 0, 0, 1)
 
 [node name="ReplayButton" type="Button" parent="CanvasLayer" unique_id=237161943]
-visible = false
-custom_minimum_size = Vector2(25, 25)
+custom_minimum_size = Vector2(50, 50)
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -26,27 +25,42 @@ offset_left = -871.0
 offset_top = -808.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Replate"
+text = "Replay"
 icon = ExtResource("2_sb313")
 script = ExtResource("3_dffvw")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer" unique_id=1762467620]
-offset_left = -3.0
-offset_top = 272.0
-offset_right = 1149.0
-offset_bottom = 366.0
-bbcode_enabled = true
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="MainLayout" type="VBoxContainer" parent="CanvasLayer" unique_id=763772350]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MainLayout" unique_id=1762467620]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StartButton" type="Button" parent="CanvasLayer/MainLayout" unique_id=859297337]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
 text = "Start Challenge"
+
+[node name="SkipButton" type="Button" parent="CanvasLayer" unique_id=1301698650]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -54.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Skip >"

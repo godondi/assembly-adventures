@@ -3,8 +3,6 @@ extends Button
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Hide button initially
-	visible = false
 
 	# Set button text
 	text = "Begin Challenge"
@@ -33,10 +31,6 @@ func _ready() -> void:
 	add_theme_color_override("font_color", Color.WHITE)
 	add_theme_color_override("font_hover_color", Color.WHITE)
 	add_theme_color_override("font_pressed_color", Color.WHITE)
-
-	# Wait 5 seconds then show
-	await get_tree().create_timer(5.0).timeout
-	visible = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

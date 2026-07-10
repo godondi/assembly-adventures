@@ -1,9 +1,10 @@
 extends Node2D
 
-@onready var text_label: RichTextLabel = $CanvasLayer/RichTextLabel
-@onready var background: ColorRect = $CanvasLayer/ColorRect
+@onready var text_label: RichTextLabel = $CanvasLayer/MainLayout/RichTextLabel
+@onready var start_button: Button = $CanvasLayer/MainLayout/StartButton
+@onready var replay_button: Button = $CanvasLayer/ReplayButton
+@onready var skip_button: Button = $CanvasLayer/SkipButton
 
-# Define the storyline with custom durations and formatting types
 var story: Array [Dictionary] = [
 	{"text": "[center][font_size=32][b]Assembly Adventures:\nThe Lost Instructions[/b][/font_size][/center]", "duration": 4.0, "type": "flicker"},
 	{"text": "[center][i]The screen flickers to life.[/i][/center]", "duration": 2.5, "type": "flicker"},
@@ -41,71 +42,101 @@ var story: Array [Dictionary] = [
 	{"text": "[center][i]The system flickers again.[/i][/center]", "duration": 2.5, "type": "flicker"},
 	{"text": "[center][color=green][b]The path loads.[/b][/color][/center]", "duration": 2.5, "type": "fade"},
 	{"text": "[center][color=red][b]The chase begins.[/b][/color][/center]", "duration": 3.0, "type": "pulse"},
-	{"text": "[center][font_size=24][b]Press Start… if you’re ready to run.[/b][/font_size][/center]", "duration": 9999.0, "type": "blink"} # Keeps text on screen until input
+	{"text": "[center][font_size=24][b]Press Start… if you’re ready to run.[/b][/font_size][/center]", "duration": 9999.0, "type": "blink"}
 ]
 
 var current_line: int = 0
+var active_tween: Tween
 
 func _ready() -> void:
+	# Connect UI button signals programmatically
+	start_button.pressed.connect(_on_start_button_pressed)
+	replay_button.pressed.connect(_on_replay_button_pressed)
+	
+	# Connect the new skip button signal
+	skip_button.pressed.connect(_on_skip_button_pressed)
+	
+	start_button.hide()
+	replay_button.hide()
+	skip_button.show() # Make sure skip is visible at the start!
+	
+	start_animation()
+
+func start_animation() -> void:
+	current_line = 0
 	text_label.modulate.a = 0.0
+	start_button.hide()
+	replay_button.hide()
+	skip_button.show() # Show skip button when animation restarts
 	play_next_line()
 
 func play_next_line() -> void:
 	if current_line >= story.size():
-		# Intro over, transition to the game menu or level
 		return
+
+	# Clear any running transitions to avoid tween overlap bugs on manual skips
+	if active_tween and active_tween.is_valid():
+		active_tween.kill()
 
 	var line_data = story[current_line]
 	text_label.text = line_data["text"]
 	
-	var tween = create_tween()
+	active_tween = create_tween()
 	
 	match line_data["type"]:
 		"fade":
-			# Standard smooth transition
-			tween.tween_property(text_label, "modulate:a", 1.0, 0.5)
-			tween.tween_interval(line_data["duration"] - 1.0)
-			tween.tween_property(text_label, "modulate:a", 0.0, 0.5)
+			active_tween.tween_property(text_label, "modulate:a", 1.0, 0.5)
+			active_tween.tween_interval(line_data["duration"] - 1.0)
+			active_tween.tween_property(text_label, "modulate:a", 0.0, 0.5)
+			active_tween.finished.connect(_on_line_finished)
 			
 		"flicker":
-			# Terminal glitch simulation
-			tween.tween_property(text_label, "modulate:a", 1.0, 0.05)
-			tween.tween_interval(0.1)
-			tween.tween_property(text_label, "modulate:a", 0.2, 0.05)
-			tween.tween_interval(0.08)
-			tween.tween_property(text_label, "modulate:a", 1.0, 0.05)
-			tween.tween_interval(line_data["duration"] - 0.7)
-			tween.tween_property(text_label, "modulate:a", 0.0, 0.4)
+			active_tween.tween_property(text_label, "modulate:a", 1.0, 0.05)
+			active_tween.tween_interval(0.1)
+			active_tween.tween_property(text_label, "modulate:a", 0.2, 0.05)
+			active_tween.tween_interval(0.08)
+			active_tween.tween_property(text_label, "modulate:a", 1.0, 0.05)
+			active_tween.tween_interval(line_data["duration"] - 0.7)
+			active_tween.tween_property(text_label, "modulate:a", 0.0, 0.4)
+			active_tween.finished.connect(_on_line_finished)
 			
 		"pulse":
-			# Alarm system panic pulse
-			tween.tween_property(text_label, "modulate:a", 1.0, 0.3)
+			active_tween.tween_property(text_label, "modulate:a", 1.0, 0.3)
 			for i in range(int(line_data["duration"] - 1.0)):
-				tween.tween_property(text_label, "modulate:a", 0.4, 0.5)
-				tween.tween_property(text_label, "modulate:a", 1.0, 0.5)
-			tween.tween_property(text_label, "modulate:a", 0.0, 0.5)
+				active_tween.tween_property(text_label, "modulate:a", 0.4, 0.5)
+				active_tween.tween_property(text_label, "modulate:a", 1.0, 0.5)
+			active_tween.tween_property(text_label, "modulate:a", 0.0, 0.5)
+			active_tween.finished.connect(_on_line_finished)
 			
 		"blink":
-			# Infinite looping call to action
+			# Final layout logic: explicitly show interactive elements
 			text_label.modulate.a = 1.0
-			var blink_tween = create_tween().set_loops()
-			blink_tween.tween_property(text_label, "modulate:a", 0.0, 0.6)
-			blink_tween.tween_property(text_label, "modulate:a", 1.0, 0.6)
-			return # Break out so it doesn't auto-advance
-
-	tween.finished.connect(_on_line_finished)
+			start_button.show()
+			replay_button.show()
+			skip_button.hide() # Hide the skip button on the very last slide!
+			
+			active_tween.set_loops()
+			active_tween.tween_property(text_label, "modulate:a", 0.3, 0.6)
+			active_tween.tween_property(text_label, "modulate:a", 1.0, 0.6)
 
 func _on_line_finished() -> void:
 	current_line += 1
 	play_next_line()
 
 func _input(event: InputEvent) -> void:
-	# Allows players to skip/fast-forward lines by pressing Space or Enter
-	if event.is_action_pressed("ui_accept"):
-		if current_line < story.size() - 1:
-			current_line += 1
-			play_next_line()
-		else:
-			# If they press accept on the final prompt, load the main game
-			print("Start the game!")
-			# get_tree().change_scene_to_file("res://Game.tscn")
+	# Skip logic (only works if we aren't already resting on the final interactive prompt)
+	if event.is_action_pressed("ui_accept") and current_line < story.size() - 1:
+		current_line += 1
+		play_next_line()
+
+func _on_start_button_pressed() -> void:
+	print("Loading main game sequence...")
+	get_tree().change_scene_to_file("res://control_center.tscn")
+
+func _on_replay_button_pressed() -> void:
+	if active_tween and active_tween.is_valid():
+		active_tween.kill()
+	start_animation()
+
+func _on_skip_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://control_center.tscn")

@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://b757vc7suy80l"]
 
+[ext_resource type="Texture2D" uid="uid://b2n2f6jld1ifa" path="res://icon.svg" id="1_io8y7"]
+
 [sub_resource type="GDScript" id="GDScript_hsfs1"]
+script/source = "extends Control
+"
 
 [node name="ControlCenter" type="Control" unique_id=504010252]
 layout_mode = 3
@@ -20,12 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1626799266]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=383775397]
+[node name="MainLayout" type="VBoxContainer" parent="." unique_id=383775397]
 custom_minimum_size = Vector2(1, 1)
 layout_direction = 1
 layout_mode = 1
@@ -34,66 +33,100 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=2018364266]
+[node name="Control Center" type="Label" parent="MainLayout" unique_id=2018364266]
 layout_mode = 2
-text = "Assembly Adventures"
+theme_override_font_sizes/font_size = 36
+text = "Control Center"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=488136079]
+[node name="Badges" type="Label" parent="MainLayout" unique_id=1433891341]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "BADGES"
+horizontal_alignment = 1
+
+[node name="BadgesContainer" type="HBoxContainer" parent="MainLayout" unique_id=488136079]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+alignment = 1
+
+[node name="badge_1" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1974619327]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+texture = ExtResource("1_io8y7")
+
+[node name="badge_2" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1487083918]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+texture = ExtResource("1_io8y7")
+
+[node name="badge_3" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1123690702]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+texture = ExtResource("1_io8y7")
+
+[node name="badge_4" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=222825457]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+texture = ExtResource("1_io8y7")
+
+[node name="badge_5" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1344951874]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+texture = ExtResource("1_io8y7")
+
+[node name="badge_6" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=173862647]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+texture = ExtResource("1_io8y7")
+
+[node name="challenge_badge" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1951868434]
 layout_mode = 2
 
-[node name="badge_1" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1974619327]
+[node name="Levels" type="Label" parent="MainLayout" unique_id=910760502]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Levels"
+horizontal_alignment = 1
 
-[node name="badge_2" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1487083918]
+[node name="LevelsGrid" type="GridContainer" parent="MainLayout" unique_id=1043020768]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-
-[node name="badge_3" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1123690702]
-layout_mode = 2
-
-[node name="badge_4" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=222825457]
-layout_mode = 2
-
-[node name="badge_5" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1344951874]
-layout_mode = 2
-
-[node name="badge_6" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=173862647]
-layout_mode = 2
-
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer" unique_id=1043020768]
-layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
+columns = 3
 
-[node name="level_1" type="Button" parent="VBoxContainer/GridContainer" unique_id=529076245]
+[node name="level_1" type="Button" parent="MainLayout/LevelsGrid" unique_id=529076245]
 layout_mode = 2
 text = "Level 1: Basic RISC-V Commands"
 
-[node name="level_2" type="Button" parent="VBoxContainer/GridContainer" unique_id=347652765]
+[node name="level_2" type="Button" parent="MainLayout/LevelsGrid" unique_id=347652765]
 layout_mode = 2
 text = "Level 2: Opcode"
 
-[node name="level_3" type="Button" parent="VBoxContainer/GridContainer" unique_id=799141599]
+[node name="level_3" type="Button" parent="MainLayout/LevelsGrid" unique_id=799141599]
 layout_mode = 2
 text = "Level 3: Pipelining"
 
-[node name="level_4" type="Button" parent="VBoxContainer/GridContainer" unique_id=456400718]
+[node name="level_4" type="Button" parent="MainLayout/LevelsGrid" unique_id=456400718]
 layout_mode = 2
 text = "Level 4: The Stack"
 
-[node name="level_5" type="Button" parent="VBoxContainer/GridContainer" unique_id=315773592]
+[node name="level_5" type="Button" parent="MainLayout/LevelsGrid" unique_id=315773592]
 layout_mode = 2
 text = "Level 5: Code Tracing"
 
-[node name="level_6" type="Button" parent="VBoxContainer/GridContainer" unique_id=1038992234]
+[node name="level_6" type="Button" parent="MainLayout/LevelsGrid" unique_id=1038992234]
 layout_mode = 2
 text = "Level 6: Code Writing"
 
-[node name="level_7" type="Button" parent="VBoxContainer/GridContainer" unique_id=401415624]
+[node name="level_7" type="Button" parent="MainLayout" unique_id=401415624]
 layout_mode = 2
 text = "CHALLENGE"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=1327763178]
+[node name="ProgressBar" type="ProgressBar" parent="MainLayout" unique_id=1327763178]
 layout_mode = 2
