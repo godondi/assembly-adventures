@@ -1,10 +1,88 @@
 [gd_scene format=3 uid="uid://b757vc7suy80l"]
 
-[ext_resource type="Texture2D" uid="uid://b2n2f6jld1ifa" path="res://images/icon.svg" id="1_io8y7"]
+[ext_resource type="Script" uid="uid://ivgmf1xacxuf" path="res://badges_container.gd" id="1_bmy8x"]
+[ext_resource type="Shader" uid="uid://djtfe17er3ew" path="res://badge_grayscale.gdshader" id="1_d3ds4"]
+[ext_resource type="Texture2D" uid="uid://cbt3c0b77jxq8" path="res://images/1.svg" id="2_bmy8x"]
+[ext_resource type="Texture2D" uid="uid://cteoh8c818ann" path="res://images/2.svg" id="3_o3wva"]
+[ext_resource type="Texture2D" uid="uid://de66dmfjl0cxc" path="res://images/3.svg" id="4_m6iig"]
+[ext_resource type="Texture2D" uid="uid://c3tafgjhujib2" path="res://images/4.svg" id="5_cogsi"]
+[ext_resource type="Texture2D" uid="uid://ba5kq6kbq1y2u" path="res://images/5.svg" id="6_kv4hx"]
+[ext_resource type="Texture2D" uid="uid://den6ejw1n3rdu" path="res://images/6.svg" id="7_6524e"]
+[ext_resource type="Texture2D" uid="uid://cm3ir5bytp2oj" path="res://images/7.svg" id="8_yegax"]
 
 [sub_resource type="GDScript" id="GDScript_hsfs1"]
 script/source = "extends Control
 "
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ev7vo"]
+shader = ExtResource("1_d3ds4")
+shader_parameter/gray_amount = 1.0
+
+[sub_resource type="GDScript" id="GDScript_bmy8x"]
+script/source = "# badge_button.gd — attach to each badge TextureRect
+extends TextureRect
+
+@export var earned: bool = false  # set true if this badge was actually earned
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP  # required so gui_input actually fires
+
+	if not material:
+		material = ShaderMaterial.new()
+		material.shader = preload(\"res://badge_grayscale.gdshader\")
+
+	material.set_shader_parameter(\"gray_amount\", 1.0 if not earned else 0.0)
+
+	gui_input.connect(_on_gui_input)
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_reveal_color()
+
+func _reveal_color() -> void:
+	var tween := create_tween()
+	tween.tween_method(
+		func(v): material.set_shader_parameter(\"gray_amount\", v),
+		material.get_shader_parameter(\"gray_amount\"), 0.0, 0.4
+	).set_trans(Tween.TRANS_SINE)
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d3ds4"]
+shader = ExtResource("1_d3ds4")
+shader_parameter/gray_amount = 1.0
+
+[sub_resource type="GDScript" id="GDScript_o3wva"]
+script/source = "# badge_button.gd — attach to each badge TextureRect
+extends TextureRect
+
+@export var earned: bool = false  # set true if this badge was actually earned
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP  # required so gui_input actually fires
+
+	if not material:
+		material = ShaderMaterial.new()
+		material.shader = preload(\"res://badge_grayscale.gdshader\")
+
+	material.set_shader_parameter(\"gray_amount\", 1.0 if not earned else 0.0)
+
+	gui_input.connect(_on_gui_input)
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_reveal_color()
+
+func _reveal_color() -> void:
+	var tween := create_tween()
+	tween.tween_method(
+		func(v): material.set_shader_parameter(\"gray_amount\", v),
+		material.get_shader_parameter(\"gray_amount\"), 0.0, 0.4
+	).set_trans(Tween.TRANS_SINE)
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bmy8x"]
+shader = ExtResource("1_d3ds4")
+shader_parameter/gray_amount = 1.0
 
 [node name="ControlCenter" type="Control" unique_id=504010252]
 layout_mode = 3
@@ -52,39 +130,65 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 alignment = 1
+script = ExtResource("1_bmy8x")
 
 [node name="badge_1" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1974619327]
-custom_minimum_size = Vector2(60, 0)
+material = SubResource("ShaderMaterial_ev7vo")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_io8y7")
+texture = ExtResource("2_bmy8x")
+expand_mode = 1
+stretch_mode = 5
+script = SubResource("GDScript_bmy8x")
 
 [node name="badge_2" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1487083918]
-custom_minimum_size = Vector2(60, 0)
+material = SubResource("ShaderMaterial_d3ds4")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_io8y7")
+texture = ExtResource("3_o3wva")
+expand_mode = 1
+stretch_mode = 5
+script = SubResource("GDScript_o3wva")
 
 [node name="badge_3" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1123690702]
-custom_minimum_size = Vector2(60, 0)
+material = SubResource("ShaderMaterial_bmy8x")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_io8y7")
+texture = ExtResource("4_m6iig")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="badge_4" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=222825457]
-custom_minimum_size = Vector2(60, 0)
+material = SubResource("ShaderMaterial_bmy8x")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_io8y7")
+texture = ExtResource("5_cogsi")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="badge_5" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1344951874]
-custom_minimum_size = Vector2(60, 0)
+material = SubResource("ShaderMaterial_bmy8x")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_io8y7")
+texture = ExtResource("6_kv4hx")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="badge_6" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=173862647]
-custom_minimum_size = Vector2(60, 0)
+material = SubResource("ShaderMaterial_bmy8x")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_io8y7")
+texture = ExtResource("7_6524e")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="challenge_badge" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1951868434]
+material = SubResource("ShaderMaterial_bmy8x")
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
+texture = ExtResource("8_yegax")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Levels" type="Label" parent="MainLayout" unique_id=910760502]
 layout_mode = 2

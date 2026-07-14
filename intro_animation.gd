@@ -53,6 +53,9 @@ func _ready() -> void:
 	start_button.pressed.connect(_on_start_button_pressed)
 	replay_button.pressed.connect(_on_replay_button_pressed)
 	
+	replay_button.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	replay_button.position -= Vector2(20, 20)  # small inset from the corner
+	
 	# Connect the new skip button signal
 	skip_button.pressed.connect(_on_skip_button_pressed)
 	
