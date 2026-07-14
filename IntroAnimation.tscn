@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dy3c0xdjdkdcl"]
 
 [ext_resource type="Script" uid="uid://sp1pwwmjo6wc" path="res://intro_animation.gd" id="1_ub7b6"]
-[ext_resource type="Texture2D" uid="uid://bube4s6squqjn" path="res://replay-svg.svg" id="2_sb313"]
+[ext_resource type="Texture2D" uid="uid://bube4s6squqjn" path="res://images/replay-svg.svg" id="2_sb313"]
 [ext_resource type="Script" uid="uid://e7n5g7he5v47" path="res://replay_button.gd" id="3_dffvw"]
 
 [node name="IntroAnimation" type="Node2D" unique_id=51212479]
