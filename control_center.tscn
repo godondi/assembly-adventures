@@ -12,73 +12,58 @@
 
 [sub_resource type="GDScript" id="GDScript_hsfs1"]
 script/source = "extends Control
+
+@onready var levels_grid: GridContainer = $MainLayout/LevelsGrid
+@onready var challenge_button: Button = $MainLayout/level_7
+@onready var badges_container: HBoxContainer = $MainLayout/BadgesContainer
+
+# Map your levels array cleanly to match the introductory narrative
+var level_scenes: Dictionary = {
+	0: \"res://levels/level_1/risc_v_level.tscn\",
+	1: \"res://levels/level_2/opcode.tscn\",
+	2: \"res://levels/level_3/pipelining\",
+	3: \"res://levels/level_4/the_stack\",
+	4: \"res://levels/level_5/code_tracing\",
+	5: \"res://levels/level_6/code_writing.tscn\"}
+
+func _ready() -> void:
+	# Programmatically connect all level grid buttons based on their tree position index
+	var index = 0
+	for child in levels_grid.get_children():
+		if child is Button:
+			child.pressed.connect(_on_level_button_pressed.bind(index))
+			index += 1
+			
+	# Connect the master bottom challenge button
+	challenge_button.pressed.connect(_on_challenge_button_pressed)
+	
+	# Optional initialization feature: Update visuals for completed badges
+	initialize_badges_display()
+
+func _on_level_button_pressed(level_index: int) -> void:
+	if level_scenes.has(level_index):
+		print(\"Routing system path to: \", level_scenes[level_index])
+		get_tree().change_scene_to_file(level_scenes[level_index])
+	else:
+		print(\"Target level instruction profile unmapped.\")
+
+func _on_challenge_button_pressed() -> void:
+	print(\"WARNING: Launching master system logic validation loop...\")
+	get_tree().change_scene_to_file(\"res://levels/level_challenge/challenger.tscn\")
+
+func initialize_badges_display() -> void:
+	# This function acts as a structural hook where you can pull player profile data
+	# to tint earned badges versus unearned dimmed outlines.
+	pass
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ev7vo"]
 shader = ExtResource("1_d3ds4")
 shader_parameter/gray_amount = 1.0
 
-[sub_resource type="GDScript" id="GDScript_bmy8x"]
-script/source = "# badge_button.gd — attach to each badge TextureRect
-extends TextureRect
-
-@export var earned: bool = false  # set true if this badge was actually earned
-
-func _ready() -> void:
-	mouse_filter = Control.MOUSE_FILTER_STOP  # required so gui_input actually fires
-
-	if not material:
-		material = ShaderMaterial.new()
-		material.shader = preload(\"res://badge_grayscale.gdshader\")
-
-	material.set_shader_parameter(\"gray_amount\", 1.0 if not earned else 0.0)
-
-	gui_input.connect(_on_gui_input)
-
-func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_reveal_color()
-
-func _reveal_color() -> void:
-	var tween := create_tween()
-	tween.tween_method(
-		func(v): material.set_shader_parameter(\"gray_amount\", v),
-		material.get_shader_parameter(\"gray_amount\"), 0.0, 0.4
-	).set_trans(Tween.TRANS_SINE)
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d3ds4"]
 shader = ExtResource("1_d3ds4")
 shader_parameter/gray_amount = 1.0
-
-[sub_resource type="GDScript" id="GDScript_o3wva"]
-script/source = "# badge_button.gd — attach to each badge TextureRect
-extends TextureRect
-
-@export var earned: bool = false  # set true if this badge was actually earned
-
-func _ready() -> void:
-	mouse_filter = Control.MOUSE_FILTER_STOP  # required so gui_input actually fires
-
-	if not material:
-		material = ShaderMaterial.new()
-		material.shader = preload(\"res://badge_grayscale.gdshader\")
-
-	material.set_shader_parameter(\"gray_amount\", 1.0 if not earned else 0.0)
-
-	gui_input.connect(_on_gui_input)
-
-func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_reveal_color()
-
-func _reveal_color() -> void:
-	var tween := create_tween()
-	tween.tween_method(
-		func(v): material.set_shader_parameter(\"gray_amount\", v),
-		material.get_shader_parameter(\"gray_amount\"), 0.0, 0.4
-	).set_trans(Tween.TRANS_SINE)
-"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bmy8x"]
 shader = ExtResource("1_d3ds4")
@@ -139,7 +124,6 @@ layout_mode = 2
 texture = ExtResource("2_bmy8x")
 expand_mode = 1
 stretch_mode = 5
-script = SubResource("GDScript_bmy8x")
 
 [node name="badge_2" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1487083918]
 material = SubResource("ShaderMaterial_d3ds4")
@@ -148,7 +132,6 @@ layout_mode = 2
 texture = ExtResource("3_o3wva")
 expand_mode = 1
 stretch_mode = 5
-script = SubResource("GDScript_o3wva")
 
 [node name="badge_3" type="TextureRect" parent="MainLayout/BadgesContainer" unique_id=1123690702]
 material = SubResource("ShaderMaterial_bmy8x")

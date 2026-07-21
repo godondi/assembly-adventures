@@ -1,11 +1,7 @@
 # badges_container.gd — attach to BadgesContainer
-extends HBoxContainer  # match whatever BadgesContainer actually is (GridContainer, HBoxContainer, etc.)
+extends HBoxContainer
 
 const GRAYSCALE_SHADER := preload("res://badge_grayscale.gdshader")
-
-# Names of badges the player has already earned.
-# Swap this for real save/progress data later.
-@export var earned_badges: Array[String] = []
 
 func _ready() -> void:
 	for badge in get_children():
@@ -23,7 +19,10 @@ func _setup_badge(badge: Node) -> void:
 	mat.shader = GRAYSCALE_SHADER
 	badge.material = mat
 
-	var is_earned := badge.name in earned_badges
+	# Check against our global PlayerData singleton
+	var is_earned := badge.name in PlayerData.earned_badges
+	
+	# Set directly to full color (0.0 gray) if earned globally, otherwise grayscale (1.0)
 	mat.set_shader_parameter("gray_amount", 0.0 if is_earned else 1.0)
 
 	badge.gui_input.connect(_on_badge_gui_input.bind(badge))

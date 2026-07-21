@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://dy3c0xdjdkdcl"]
 
-[ext_resource type="Script" uid="uid://sp1pwwmjo6wc" path="res://intro_animation.gd" id="1_ub7b6"]
-[ext_resource type="Texture2D" uid="uid://bube4s6squqjn" path="res://images/replay-svg.svg" id="2_sb313"]
-[ext_resource type="Script" uid="uid://e7n5g7he5v47" path="res://replay_button.gd" id="3_dffvw"]
+[ext_resource type="Script" uid="uid://sp1pwwmjo6wc" path="res://intro_animation.gd" id="1_c334h"]
+[ext_resource type="Texture2D" uid="uid://bube4s6squqjn" path="res://images/replay-svg.svg" id="2_v43n7"]
+[ext_resource type="Script" uid="uid://e7n5g7he5v47" path="res://replay_button.gd" id="3_bcxos"]
 
 [node name="IntroAnimation" type="Node2D" unique_id=51212479]
-script = ExtResource("1_ub7b6")
+script = ExtResource("1_c334h")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2071717056]
 
@@ -50,8 +50,8 @@ offset_top = -7145.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Replay"
-icon = ExtResource("2_sb313")
-script = ExtResource("3_dffvw")
+icon = ExtResource("2_v43n7")
+script = ExtResource("3_bcxos")
 
 [node name="SkipButton" type="Button" parent="CanvasLayer" unique_id=1301698650]
 anchors_preset = 3
