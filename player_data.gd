@@ -7,3 +7,6 @@ func unlock_badge(badge_name: String) -> void:
 	if not earned_badges.has(badge_name):
 		earned_badges.append(badge_name)
 		print("Badge unlocked: ", badge_name)
+		
+func get_progress_ratio() -> float:
+	return float(earned_badges.size()) / 7

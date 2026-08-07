@@ -52,32 +52,26 @@ func _ready() -> void:
 	# Connect UI button signals programmatically
 	start_button.pressed.connect(_on_start_button_pressed)
 	replay_button.pressed.connect(_on_replay_button_pressed)
-	
-	replay_button.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	replay_button.position -= Vector2(20, 20)  # small inset from the corner
-	
-	# Connect the new skip button signal
 	skip_button.pressed.connect(_on_skip_button_pressed)
-	
+
 	start_button.hide()
 	replay_button.hide()
-	skip_button.show() # Make sure skip is visible at the start!
+	skip_button.show()
 	
 	start_animation()
-
+	
 func start_animation() -> void:
 	current_line = 0
 	text_label.modulate.a = 0.0
 	start_button.hide()
 	replay_button.hide()
-	skip_button.show() # Show skip button when animation restarts
+	skip_button.show()
 	play_next_line()
 
 func play_next_line() -> void:
 	if current_line >= story.size():
 		return
 
-	# Clear any running transitions to avoid tween overlap bugs on manual skips
 	if active_tween and active_tween.is_valid():
 		active_tween.kill()
 
@@ -112,11 +106,11 @@ func play_next_line() -> void:
 			active_tween.finished.connect(_on_line_finished)
 			
 		"blink":
-			# Final layout logic: explicitly show interactive elements
+			# Explicitly show interactive elements at end of intro sequence
 			text_label.modulate.a = 1.0
 			start_button.show()
 			replay_button.show()
-			skip_button.hide() # Hide the skip button on the very last slide!
+			skip_button.hide()
 			
 			active_tween.set_loops()
 			active_tween.tween_property(text_label, "modulate:a", 0.3, 0.6)
@@ -127,7 +121,6 @@ func _on_line_finished() -> void:
 	play_next_line()
 
 func _input(event: InputEvent) -> void:
-	# Skip logic (only works if we aren't already resting on the final interactive prompt)
 	if event.is_action_pressed("ui_accept") and current_line < story.size() - 1:
 		current_line += 1
 		play_next_line()

@@ -16,6 +16,7 @@ script/source = "extends Control
 @onready var levels_grid: GridContainer = $MainLayout/LevelsGrid
 @onready var challenge_button: Button = $MainLayout/level_7
 @onready var badges_container: HBoxContainer = $MainLayout/BadgesContainer
+@onready var progress_bar: ProgressBar = $MainLayout/ProgressBar
 
 # Map your levels array cleanly to match the introductory narrative
 var level_scenes: Dictionary = {
@@ -33,6 +34,8 @@ func _ready() -> void:
 		if child is Button:
 			child.pressed.connect(_on_level_button_pressed.bind(index))
 			index += 1
+	
+	_update_progress_bar()
 			
 	# Connect the master bottom challenge button
 	challenge_button.pressed.connect(_on_challenge_button_pressed)
@@ -50,6 +53,12 @@ func _on_level_button_pressed(level_index: int) -> void:
 func _on_challenge_button_pressed() -> void:
 	print(\"WARNING: Launching master system logic validation loop...\")
 	get_tree().change_scene_to_file(\"res://levels/level_challenge/challenger.tscn\")
+
+func _update_progress_bar() -> void:
+	if progress_bar:
+		var target_value := PlayerData.get_progress_ratio() * 100.0
+		var tween := create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tween.tween_property(progress_bar, \"value\", target_value, 0.8)
 
 func initialize_badges_display() -> void:
 	# This function acts as a structural hook where you can pull player profile data

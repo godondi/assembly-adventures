@@ -18,6 +18,13 @@ config/icon="res://images/icon.svg"
 [autoload]
 
 PlayerData="*uid://cqtg04jdlnjhc"
+MCPScreenshot="*res://addons/godot_mcp/mcp_screenshot_service.gd"
+MCPInputService="*res://addons/godot_mcp/mcp_input_service.gd"
+MCPGameInspector="*res://addons/godot_mcp/mcp_game_inspector_service.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
 
 [physics]
 
